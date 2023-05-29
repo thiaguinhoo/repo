@@ -39,9 +39,13 @@ app.post("/PROD/RetornaInfosEsocial", async (req, res) => {
       }
     );
 
+    console.log("1", response.status, response.headers.location);
+
     response = await instance.get(response.headers.location, {
       maxRedirects: 0,
     });
+
+    console.log("2", response.status, response.headers.location);
 
     response = await instance.get(
       response.headers.location?.replace(
@@ -50,6 +54,9 @@ app.post("/PROD/RetornaInfosEsocial", async (req, res) => {
       ),
       { maxRedirects: 0 }
     );
+
+    console.log("3", response.status);
+
     response = await instance.get("https://login.esocial.gov.br/login.aspx");
 
     const match = response.data.match(
@@ -58,15 +65,27 @@ app.post("/PROD/RetornaInfosEsocial", async (req, res) => {
 
     const url = match[0];
 
+    console.log("4", response.status, url);
+
     response = await instance.get(url, { maxRedirects: 0 });
 
-    response = await instance.get(response.headers.location, {
-      maxRedirects: 0,
-    });
+    console.log("5", response.status, response.headers.location);
 
     response = await instance.get(response.headers.location, {
       maxRedirects: 0,
     });
+
+    console.log("6", response.status, response.headers.location);
+
+    response = await instance.get(response.headers.location, {
+      maxRedirects: 0,
+    });
+
+    console.log(
+      "7",
+      response.status,
+      `https://esocial.gov.br${response.headers.location}`
+    );
 
     response = await instance.get(
       `https://esocial.gov.br${response.headers.location}`,
@@ -85,10 +104,25 @@ app.post("/PROD/RetornaInfosEsocial", async (req, res) => {
     formData.append("perfilAcesso", "PROCURADOR_PJ");
     formData.append("procuradorCnpj", companyCNPJ);
 
+    console.log(
+      "8",
+      response.status,
+      `https://www.esocial.gov.br/portal/Home/IndexProcuracao?procuradorCnpj${companyCNPJ}=&procuradorCpf=&tipoEmpregador=sst`
+    );
+
     response = await instance.post(
       `https://www.esocial.gov.br/portal/Home/IndexProcuracao?procuradorCnpj${companyCNPJ}=&procuradorCpf=&tipoEmpregador=sst`,
       formData,
       { maxRedirects: 0 }
+    );
+
+    console.log(
+      "8",
+      response.status,
+      response.headers.location?.replace(
+        "/sst/login/",
+        "/api/login?identificadorLogin="
+      )
     );
 
     response = await instance.post(
