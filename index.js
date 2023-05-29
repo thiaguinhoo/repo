@@ -4,10 +4,6 @@ const axios = require("axios");
 const { CookieJar } = require("tough-cookie");
 const { HttpsCookieAgent } = require("http-cookie-agent/http");
 
-const jar = new CookieJar();
-
-const instance = axios.create({ jar, withCredentials: true });
-
 const serverPort = process.env.SERVER_PORT || 3333;
 const app = express();
 app.use(express.json());
@@ -15,6 +11,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.post("/PROD/RetornaInfosEsocial", async (req, res) => {
+  const jar = new CookieJar();
+
+  const instance = axios.create({ jar, withCredentials: true });
+
   const {
     body: { certificate, password, companyCNPJ, employeeCPF },
   } = req.body;
