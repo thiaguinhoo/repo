@@ -63,6 +63,8 @@ app.post("/PROD/RetornaInfosEsocial", async (req, res) => {
       /https?:\/\/sso\.acesso\.gov\.br\/authorize[^'"]*/
     );
 
+    console.log("match", response.status, response.data, match);
+
     const url = match[0];
 
     console.log("4", response.status, url);
