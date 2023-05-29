@@ -1,5 +1,3 @@
-const http = require("http");
-
 const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
@@ -119,8 +117,4 @@ app.post("/PROD/RetornaInfosEsocial", async (req, res) => {
   }
 });
 
-const server = http.createServer(app);
-
-server.listen(serverPort, () =>
-  console.log(`Server running on *:${serverPort}`)
-);
+app.listen(serverPort, () => console.log(`Server running on *:${serverPort}`));
